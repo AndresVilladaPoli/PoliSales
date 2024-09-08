@@ -31,15 +31,22 @@ export async function createUserSession({
 }
 
 export async function destroyUserSession(request) {
+  const logoutSearchParams = new URLSearchParams();
+  logoutSearchParams.append("client_id", process.env.APP_CLIENT_ID);
+  logoutSearchParams.append("logout_uri", `${process.env.DOMAIN}/login`);
+
   const session = await sessionStorage.getSession(
     request.headers.get("Cookie"),
   );
 
-  return redirect("/", {
-    headers: {
-      "Set-Cookie": await sessionStorage.destroySession(session),
+  return redirect(
+    `${process.env.COGNITO_DOMAIN}/logout?${logoutSearchParams.toString()}`,
+    {
+      headers: {
+        "Set-Cookie": await sessionStorage.destroySession(session),
+      },
     },
-  });
+  );
 }
 
 export async function getUserFromSession(request) {
@@ -60,7 +67,7 @@ export async function requireUserSession(request) {
   const userId = await getUserFromSession(request);
 
   if (!userId) {
-    return redirect("/auth");
+    return redirect("/login");
   }
 
   return userId;
