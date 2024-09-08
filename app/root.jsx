@@ -6,6 +6,7 @@ import {
   ScrollRestoration,
   useRouteError,
   Link,
+  json,
 } from "@remix-run/react";
 import "./tailwind.css";
 
@@ -15,6 +16,16 @@ export const meta = () => {
     { name: "description", content: "Bienvenido a Poli Sales" },
   ];
 };
+
+export async function loader() {
+  return json({
+    ENV: {
+      COGNITO_DOMAIN: process.env.COGNITO_DOMAIN,
+      APP_CLIENT_ID: process.env.APP_CLIENT_ID,
+      DOMAIN: process.env.DOMAIN,
+    },
+  });
+}
 
 export function Layout({ children }) {
   return (
