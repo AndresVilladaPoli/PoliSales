@@ -13,7 +13,6 @@ export async function loader({ request }) {
 
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
-  let error;
 
   if (code) {
     const response = await fetch(`${COGNITO_DOMAIN}/oauth2/token`, {
