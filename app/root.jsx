@@ -4,18 +4,28 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useRouteError,
+  Link,
 } from "@remix-run/react";
+import "./tailwind.css";
+
+export const meta = () => {
+  return [
+    { title: "Poli Sales" },
+    { name: "description", content: "Bienvenido a Poli Sales" },
+  ];
+};
 
 export function Layout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="h-full">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -26,4 +36,21 @@ export function Layout({ children }) {
 
 export default function App() {
   return <Outlet />;
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  return (
+    <div className="h-full flex flex-col justify-center items-center">
+      <h1 className=" text-2xl text-red-700">Ha ocurrido un error!</h1>
+      <p className="my-3 text-base">{error.message}</p>
+      <Link
+        to="/"
+        className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
+      >
+        Volver al inicio
+      </Link>
+    </div>
+  );
 }
