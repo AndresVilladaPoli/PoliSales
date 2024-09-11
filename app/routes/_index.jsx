@@ -7,14 +7,19 @@ export function loader({ request }) {
 
 export default function Index() {
   return (
-    <div className="h-full flex flex-col items-center">
-      <h1 className="text-xl mb-2">Bienvenido a Poli Sales</h1>
-      <Link
-        to="/logout"
-        className="text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-orange-600 dark:hover:bg-orange-700 focus:outline-none dark:focus:ring-orange-800"
-      >
-        Cerrar sesión
-      </Link>
+    <div className="h-screen flex flex-col items-center bg-gray-100">
+      <header className="w-full bg-[#196844] text-white py-4">
+        <h1 className="text-4xl font-bold text-center">Bienvenido a POLIsales</h1>
+      </header>
+      <main className="flex-grow flex items-center justify-center">
+        <Link
+          to="/logout"
+          className="text-white bg-[#196844] hover:bg-[#024006] focus:ring-4 focus:ring-[#A3BF3F] font-medium rounded-lg text-sm px-5 py-2.5 transition-colors duration-300"
+        >
+          Cerrar Sesión
+        </Link>
+      </main>
     </div>
   );
 }
+

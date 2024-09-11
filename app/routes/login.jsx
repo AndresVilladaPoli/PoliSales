@@ -1,6 +1,7 @@
 import { useLoaderData, json } from "@remix-run/react";
 import { jwtDecode } from "jwt-decode";
 import { createUserSession } from "../data/auth.server";
+import React from 'react';  
 
 export async function loader({ request }) {
   const { COGNITO_DOMAIN, APP_CLIENT_ID, APP_CLIENT_SECRET, DOMAIN } =
@@ -65,6 +66,7 @@ export async function loader({ request }) {
 
 export default function Auth() {
   const data = useLoaderData();
+  const [loading, setLoading] = React.useState(false); // estado del spinner
   const redirectSearchParams = new URLSearchParams();
   const logoutSearchParams = new URLSearchParams();
 
@@ -77,30 +79,50 @@ export default function Auth() {
   logoutSearchParams.append("client_id", data.ENV.APP_CLIENT_ID);
   logoutSearchParams.append("logout_uri", `${data.ENV.DOMAIN}/login`);
 
+  const handleLogin = () => { // mostrar spinner
+    setLoading(true); 
+  };
+
   return (
-    <div className="h-full flex flex-col justify-center items-center">
-      <h1 className="my-3 text-2xl text-orange-700">Inicia sesión</h1>
-      {!data.shouldLogout && (
-        <a
-          className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
-          href={`${
-            data.ENV.COGNITO_DOMAIN
-          }/oauth2/authorize?${redirectSearchParams.toString()}`}
-        >
-          Iniciar sesión con Google
-        </a>
+    <div className="min-h-screen flex flex-col justify-center items-center bg-[#024006] relative">
+      {loading && (
+        <div className="absolute inset-0 bg-white bg-opacity-75 flex justify-center items-center z-50">
+          <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-[#196844]"></div>
+        </div>
       )}
-      {data.shouldLogout && (
-        <a
-          className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
-          href={`${
-            data.ENV.COGNITO_DOMAIN
-          }/logout?${logoutSearchParams.toString()}`}
-        >
-          Cerrar sesión en Google
-        </a>
-      )}
-      {data.error && <p className="mt-3 text-red-600 text-sm">{data.error}</p>}
+
+      <div className="bg-white shadow-lg rounded-lg p-6 md:w-1/3 w-full z-10">
+        <h1 className="text-3xl font-semibold text-center text-[#A3BF3F] mb-4">
+          Inicia Sesión
+        </h1>
+        {!data.shouldLogout && (
+          <a
+            onClick={handleLogin}
+            className="w-full flex justify-center items-center bg-[#196844] text-white font-medium py-2 px-4 rounded-md hover:bg-[#024006] transition-colors duration-300 focus:ring-4 focus:ring-[#A3BF3F] focus:outline-none"
+            href={`${
+              data.ENV.COGNITO_DOMAIN
+            }/oauth2/authorize?${redirectSearchParams.toString()}`}
+          >
+            Iniciar sesión con Google
+          </a>
+        )}
+        {data.shouldLogout && (
+          <a
+            onClick={handleLogin}
+            className="w-full flex justify-center items-center bg-[#196844] text-white font-medium py-2 px-4 rounded-md hover:bg-[#024006] transition-colors duration-300 focus:ring-4 focus:ring-[#A3BF3F] focus:outline-none"
+            href={`${
+              data.ENV.COGNITO_DOMAIN
+            }/logout?${logoutSearchParams.toString()}`}
+          >
+            Cerrar sesión en Google
+          </a>
+        )}
+        {data.error && (
+          <p className="mt-3 text-center text-red-600 text-sm">
+            {data.error}
+          </p>
+        )}
+      </div>
     </div>
   );
 }
