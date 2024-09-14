@@ -91,10 +91,25 @@ export default function Auth() {
         </div>
       )}
 
-      <div className="bg-white shadow-lg rounded-lg p-6 md:w-1/3 w-full z-10">
-        <h1 className="text-3xl font-semibold text-center text-[#A3BF3F] mb-4">
+      {/* Logo PCJIC */}
+      <img 
+        src="../public/img/logo_poli.png" 
+        alt="Logo" 
+        className="absolute top-4 left-4 w-60 h-30" />
+
+      {/* Logo Polisales */}
+        <img
+        src="../public/img/logo_polisales_white.png" 
+        alt="Logo"
+        className="absolute top-4 right-4 w-60 h-30" />
+
+      <h1 className="text-8xl font-bold text-white mt-18  mb-8">POLIsales</h1>
+
+      <div className="bg-white shadow-lg rou  nded-lg p-6 md:w-1/3 w-full z-10 text-center">
+        <h2 className="text-3xl font-semibold text-[#A3BF3F] mb-4">
           Inicia Sesión
-        </h1>
+        </h2>
+
         {!data.shouldLogout && (
           <a
             onClick={handleLogin}
