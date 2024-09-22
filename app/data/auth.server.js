@@ -1,6 +1,9 @@
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
+import createUserDb from "./dynamodb/user/createUser";
+import getUserByEmail from "./dynamodb/user/getUserByEmail";
+import User from "../models/User";
 
-const SESSION_SECRET = process.env.SESSION_SECRET;
+const { SESSION_SECRET } = process.env;
 
 const sessionStorage = createCookieSessionStorage({
   cookie: {
@@ -18,6 +21,11 @@ export async function createUserSession({
   username,
   redirectPath,
 }) {
+  const savedUser = await getUserByEmail(email);
+  if (!savedUser) {
+    await createUserDb(new User(email, email));
+  }
+
   const session = await sessionStorage.getSession();
   session.set("userId", userId);
   session.set("email", email);

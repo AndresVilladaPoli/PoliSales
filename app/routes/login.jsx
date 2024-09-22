@@ -1,7 +1,7 @@
 import { useLoaderData, json } from "@remix-run/react";
 import { jwtDecode } from "jwt-decode";
 import { createUserSession } from "../data/auth.server";
-import React from 'react';  
+import React from "react";
 
 export async function loader({ request }) {
   const { COGNITO_DOMAIN, APP_CLIENT_ID, APP_CLIENT_SECRET, DOMAIN } =
@@ -42,7 +42,6 @@ export async function loader({ request }) {
     }
 
     const tokenClaim = jwtDecode(cognitoResponse.id_token);
-    console.log(tokenClaim.email);
     if (tokenClaim.email.split("@")[1] !== "elpoli.edu.co") {
       return json({
         ENV: frontEnv,
@@ -79,8 +78,9 @@ export default function Auth() {
   logoutSearchParams.append("client_id", data.ENV.APP_CLIENT_ID);
   logoutSearchParams.append("logout_uri", `${data.ENV.DOMAIN}/login`);
 
-  const handleLogin = () => { // mostrar spinner
-    setLoading(true); 
+  const handleLogin = () => {
+    // mostrar spinner
+    setLoading(true);
   };
 
   return (
@@ -92,16 +92,18 @@ export default function Auth() {
       )}
 
       {/* Logo PCJIC */}
-      <img 
-        src="../public/img/logo_poli.png" 
-        alt="Logo" 
-        className="absolute top-4 left-4 w-60 h-30" />
+      <img
+        src="../public/img/logo_poli.png"
+        alt="Logo"
+        className="absolute top-4 left-4 w-60 h-30"
+      />
 
       {/* Logo Polisales */}
-        <img
-        src="../public/img/logo_polisales_white.png" 
+      <img
+        src="../public/img/logo_polisales_white.png"
         alt="Logo"
-        className="absolute top-4 right-4 w-60 h-30" />
+        className="absolute top-4 right-4 w-60 h-30"
+      />
 
       <h1 className="text-8xl font-bold text-white mt-18  mb-8">POLIsales</h1>
 
@@ -133,9 +135,7 @@ export default function Auth() {
           </a>
         )}
         {data.error && (
-          <p className="mt-3 text-center text-red-600 text-sm">
-            {data.error}
-          </p>
+          <p className="mt-3 text-center text-red-600 text-sm">{data.error}</p>
         )}
       </div>
     </div>

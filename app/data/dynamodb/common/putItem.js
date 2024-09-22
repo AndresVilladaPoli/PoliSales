@@ -13,7 +13,10 @@ const putItem = async (item) => {
 
   const input = {
     TableName: DYNAMODB_TABLE,
-    Item: marshall(item, { removeUndefinedValues: true }),
+    Item: marshall(item, {
+      removeUndefinedValues: true,
+      convertClassInstanceToMap: true,
+    }),
     ConditionExpression: "attribute_not_exists(PK)",
   };
 
