@@ -4,7 +4,12 @@ import UserDTO from "../dto/UserDTO.js";
 const getUserByEmail = async (email) => {
   const { PK, SK } = UserDTO.fromUser({ email });
 
-  return getItemByKey({ PK, SK });
+  const savedUser = await getItemByKey({ PK, SK });
+  if (!savedUser) {
+    return null;
+  }
+
+  return UserDTO.toUser(savedUser);
 };
 
 export default getUserByEmail;
