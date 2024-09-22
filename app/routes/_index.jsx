@@ -9,7 +9,9 @@ export default function Index() {
   return (
     <div className="h-screen flex flex-col items-center bg-gray-100">
       <header className="w-full bg-[#196844] text-white py-4">
-        <h1 className="text-4xl font-bold text-center">Bienvenido a POLIsales</h1>
+        <h1 className="text-4xl font-bold text-center">
+          Bienvenido a POLIsales
+        </h1>
       </header>
       <main className="flex-grow flex items-center justify-center">
         <Link
@@ -22,4 +24,3 @@ export default function Index() {
     </div>
   );
 }
-
