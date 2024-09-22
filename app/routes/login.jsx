@@ -63,7 +63,7 @@ export async function loader({ request }) {
   });
 }
 
-export default function Auth() {
+export default function Login() {
   const data = useLoaderData();
   const [loading, setLoading] = React.useState(false); // estado del spinner
   const redirectSearchParams = new URLSearchParams();

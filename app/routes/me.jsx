@@ -5,13 +5,12 @@ export function loader({ request }) {
   return requireUserSession(request);
 }
 
-export default function Index() {
+export default function Me() {
   return (
     <div className="h-screen flex flex-col items-center bg-gray-100">
       <Nav />
-      <main className="flex-grow flex items-center justify-center">
-        AQUI SE VA A LISTAR LAS PUBLICACIONES CREADAS INICIALMENTE Y EL BUSCADOR
-        DE ELLAS
+      <main className="flex-grow mt-2">
+        <h1 className="text-4xl font-bold text-center">Mi perfil</h1>
       </main>
     </div>
   );
