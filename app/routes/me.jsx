@@ -50,7 +50,7 @@ export default function Me() {
       <main className="flex-grow mt-2">
         <h1 className="text-4xl font-bold text-center">Mi perfil</h1>
         <Form method="post" className="flex flex-col gap-2">
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name">Nombre</label>
           <input
             type="text"
             id="name"
@@ -61,7 +61,7 @@ export default function Me() {
           {actionData?.errors?.name ? (
             <em>{actionData?.errors?.name}</em>
           ) : null}
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">Correo</label>
           <input
             type="email"
             id="email"
