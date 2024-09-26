@@ -36,7 +36,7 @@ export function Layout({ children }) {
         <Meta />
         <Links />
       </head>
-      <body className="h-full">
+      <body className="h-full flex flex-col">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -53,12 +53,12 @@ export function ErrorBoundary() {
   const error = useRouteError();
 
   return (
-    <div className="h-full flex flex-col justify-center items-center">
-      <h1 className=" text-2xl text-red-700">Ha ocurrido un error!</h1>
-      <p className="my-3 text-base">{error.message}</p>
+    <div className="h-full flex flex-col justify-center items-center p-4">
+      <h1 className="text-2xl text-red-700 text-center">¡Ha ocurrido un error!</h1>
+      <p className="my-3 text-base text-center">{error.message}</p>
       <Link
         to="/"
-        className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
+        className="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-200 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-green-400 dark:hover:bg-green-500 focus:outline-none dark:focus:ring-green-600 mt-4"
       >
         Volver al inicio
       </Link>

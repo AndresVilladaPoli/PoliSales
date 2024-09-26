@@ -107,10 +107,12 @@ export default function Login() {
 
       <h1 className="text-8xl font-bold text-white mt-18  mb-8">POLIsales</h1>
 
-      <div className="bg-white shadow-lg rou  nded-lg p-6 md:w-1/3 w-full z-10 text-center">
-        <h2 className="text-3xl font-semibold text-[#A3BF3F] mb-4">
-          Inicia Sesión
-        </h2>
+      <div className="bg-white shadow-lg rounded-lg p-6 md:w-1/3 w-full z-10 text-center">
+          <h2 className="text-3xl font-semibold text-black mb-4">
+                 Inicia Sesión
+          </h2>
+     
+
 
         {!data.shouldLogout && (
           <a
