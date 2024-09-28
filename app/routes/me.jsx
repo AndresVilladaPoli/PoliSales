@@ -1,8 +1,11 @@
-import { useLoaderData, Form, useActionData } from "@remix-run/react";
+import { useLoaderData, useActionData } from "@remix-run/react";
 import { useState } from "react";
 import { requireUserSession } from "../data/auth.server";
 import Nav from "../layouts/Nav";
 import updateUserName from "../data/dynamodb/user/updateUserName";
+import Form from "../components/Form";
+import Input from "../components/Input";
+import Button from "../components/Button";
 
 export async function loader({ request }) {
   const user = await requireUserSession(request);
@@ -49,52 +52,27 @@ export default function Me() {
       <Nav />
       <main className="flex-grow mt-6 px-4 sm:px-0">
         <h1 className="text-4xl font-bold text-center mb-6">Mi perfil</h1>
-        <Form
-          method="post"
-          className="max-w-md mx-auto bg-white shadow-md rounded-lg p-6 space-y-4"
-        >
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-gray-700 font-medium mb-1"
-            >
-              Nombre
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-300"
-              onChange={handleNameChange}
-              value={name}
-            />
-            {actionData?.errors?.name && (
-              <em className="text-red-600 text-sm">{actionData.errors.name}</em>
-            )}
-          </div>
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-gray-700 font-medium mb-1"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              className="w-full px-4 py-2 border rounded-lg shadow-sm bg-gray-100 cursor-not-allowed"
-              value={user.email}
-              disabled
-            />
-          </div>
-          <button
+        <Form>
+          <Input
+            id="name"
+            name="Nombre"
+            type="text"
+            value={name}
+            onChange={handleNameChange}
+            error={actionData?.errors?.name}
+          />
+          <Input
+            id="email"
+            name="Correo"
+            type="email"
+            value={user.email}
+            disabled={true}
+          />
+          <Button
+            name="Actualizar"
             type="submit"
-            className="w-full bg-green-600 text-white rounded-lg py-2 hover:bg-green-700 focus:outline-none focus:ring-4 focus:ring-green-400 transition duration-300 disabled:bg-gray-400"
             disabled={name === actionData?.newUser?.name}
-          >
-            Actualizar
-          </button>
+          />
           {actionData?.isSuccess && (
             <p className="text-green-600 mt-2">
               Perfil actualizado correctamente

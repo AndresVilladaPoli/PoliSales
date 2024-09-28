@@ -22,6 +22,7 @@ class PublicationDTO {
     this.content = null;
     this.category = null;
     this.price = null;
+    this.images = null;
     this.createdAt = null;
   }
 
@@ -48,20 +49,22 @@ class PublicationDTO {
     publicationDTO.content = publication.content;
     publicationDTO.category = publication.category;
     publicationDTO.price = publication.price;
+    publicationDTO.images = publication.images;
     publicationDTO.createdAt = publication.createdAt;
 
     return publicationDTO;
   }
 
   static toPublication(publicationDTO) {
-    return new Publication(
-      publicationDTO.id,
-      publicationDTO.title,
-      publicationDTO.authorEmail,
-      publicationDTO.content,
-      publicationDTO.category,
-      publicationDTO.price,
-      publicationDTO.createdAt,
-    );
+    return new Publication({
+      id: publicationDTO.id,
+      authorEmail: publicationDTO.authorEmail,
+      title: publicationDTO.title,
+      content: publicationDTO.content,
+      category: publicationDTO.category,
+      price: publicationDTO.price,
+      images: publicationDTO.images,
+      createdAt: publicationDTO.createdAt,
+    });
   }
 }
