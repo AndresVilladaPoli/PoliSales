@@ -42,6 +42,7 @@ export async function loader({ request }) {
     }
 
     const tokenClaim = jwtDecode(cognitoResponse.id_token);
+    // TODO: Validar en todos los endpoints que el usuario tenga el correo institucional
     if (tokenClaim.email.split("@")[1] !== "elpoli.edu.co") {
       return json({
         ENV: frontEnv,

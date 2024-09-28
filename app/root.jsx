@@ -49,6 +49,8 @@ export default function App() {
   return <Outlet />;
 }
 
+// TODO: Se pierde estilos al recargar la página
+// TODO: En rutas desconocidas redirigir a una pagina de no encontrado
 export function ErrorBoundary() {
   const error = useRouteError();
 
