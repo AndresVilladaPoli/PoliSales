@@ -68,3 +68,5 @@ class PublicationDTO {
     });
   }
 }
+
+export default PublicationDTO;

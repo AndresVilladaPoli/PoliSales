@@ -1,35 +1,22 @@
-import { memo } from "react";
+import { forwardRef, memo } from "react";
 
-const Input = ({
-  id,
-  name,
-  type,
-  value,
-  onChange,
-  error,
-  disabled,
-  ...props
-}) => {
+const Input = ({ id, label, disabled, error, ...props }, ref) => {
   return (
     <div>
       <label htmlFor={id} className="block text-gray-700 font-medium mb-1">
-        {name}
+        {label}
       </label>
       <input
-        type={type}
         id={id}
-        name={name}
         className={`w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-300 ${
           disabled ? "cursor-not-allowed" : ""
         }`}
-        onChange={onChange}
-        value={value}
-        disabled={disabled}
         {...props}
+        ref={ref}
       />
       {error && <em className="text-red-600 text-sm">{error}</em>}
     </div>
   );
 };
 
-export default memo(Input);
+export default memo(forwardRef(Input));

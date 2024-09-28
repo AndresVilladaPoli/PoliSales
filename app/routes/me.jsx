@@ -41,6 +41,7 @@ export async function action({ request }) {
 export default function Me() {
   const { user } = useLoaderData();
   const actionData = useActionData();
+  console.log("actionData: ", actionData);
   const [name, setName] = useState(user.name);
 
   const handleNameChange = (e) => {
@@ -55,7 +56,8 @@ export default function Me() {
         <Form>
           <Input
             id="name"
-            name="Nombre"
+            label="Nombre"
+            name="name"
             type="text"
             value={name}
             onChange={handleNameChange}
@@ -63,9 +65,10 @@ export default function Me() {
           />
           <Input
             id="email"
-            name="Correo"
+            name="email"
+            label="Correo"
             type="email"
-            value={user.email}
+            defaultValue={user.email}
             disabled={true}
           />
           <Button
