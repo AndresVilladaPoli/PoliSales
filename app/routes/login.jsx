@@ -85,7 +85,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-[#024006] relative">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-[#1c6b44] relative">
       {loading && (
         <div className="absolute inset-0 bg-white bg-opacity-75 flex justify-center items-center z-50">
           <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-b-4 border-[#196844]"></div>
@@ -103,7 +103,7 @@ export default function Login() {
       <img
         src="../public/img/logo_polisales_white.png"
         alt="Logo"
-        className="absolute top-4 right-4 w-60 h-30"
+        className="absolute top-4 right-4 w-40 h-40"
       />
 
       <h1 className="text-8xl font-bold text-white mt-18  mb-8">POLIsales</h1>

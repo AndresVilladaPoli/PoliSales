@@ -1,4 +1,4 @@
-import { useLoaderData, useActionData } from "@remix-run/react";
+import { useLoaderData, useActionData } from "@remix-run/react"; // act import
 import { useState } from "react";
 import { requireUserSession } from "../data/auth.server";
 import Nav from "../layouts/Nav";
@@ -41,7 +41,6 @@ export async function action({ request }) {
 export default function Me() {
   const { user } = useLoaderData();
   const actionData = useActionData();
-  console.log("actionData: ", actionData);
   const [name, setName] = useState(user.name);
 
   const handleNameChange = (e) => {
@@ -49,35 +48,44 @@ export default function Me() {
   };
 
   return (
-    <div className="h-screen flex flex-col items-center bg-gray-100">
+    <div className="h-screen flex flex-col items-center bg-[#cedad3]">
       <Nav />
-      <main className="flex-grow mt-6 px-4 sm:px-0">
-        <h1 className="text-4xl font-bold text-center mb-6">Mi perfil</h1>
-        <Form>
-          <Input
-            id="name"
-            label="Nombre"
-            name="name"
-            type="text"
-            value={name}
-            onChange={handleNameChange}
-            error={actionData?.errors?.name}
-          />
-          <Input
-            id="email"
-            name="email"
-            label="Correo"
-            type="email"
-            defaultValue={user.email}
-            disabled={true}
-          />
-          <Button
-            name="Actualizar"
-            type="submit"
-            disabled={name === actionData?.newUser?.name}
-          />
+      <main className="flex-grow mt-6 w-full max-w-lg px-4">
+        <h1 className="text-4xl font-bold text-center mb-6 text-[#1c6b44]">
+          Mi perfil
+        </h1>
+        <Form className="bg-white shadow-md rounded-lg p-6 w-full">
+          <div className="flex flex-col gap-4">
+            <Input
+              id="name"
+              label="Nombre"
+              name="name"
+              type="text"
+              value={name}
+              onChange={handleNameChange}
+              error={actionData?.errors?.name}
+              className="p-2 w-full border border-gray-300 rounded-md"
+            />
+            <Input
+              id="email"
+              name="email"
+              label="Correo"
+              type="email"
+              defaultValue={user.email}
+              disabled={true}
+              className="p-2 w-full border border-gray-300 rounded-md"
+            />
+          </div>
+          <div className="flex justify-center mt-6">
+            <Button
+              name="Actualizar"
+              type="submit"
+              disabled={name === actionData?.newUser?.name}
+              className="bg-[#1c6b44] text-white hover:bg-[#024006] focus:ring-4 focus:ring-[#cedad3] transition-colors duration-300 w-full py-2 rounded-md"
+            />
+          </div>
           {actionData?.isSuccess && (
-            <p className="text-green-600 mt-2">
+            <p className="text-green-600 mt-4 text-center">
               Perfil actualizado correctamente
             </p>
           )}
@@ -86,3 +94,5 @@ export default function Me() {
     </div>
   );
 }
+
+
