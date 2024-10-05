@@ -52,7 +52,7 @@ export default function Me() {
       <Nav />
       <main className="flex-grow mt-6 w-full max-w-lg px-4">
         <h1 className="text-4xl font-bold text-center mb-6 text-[#1c6b44]">
-          Mi perfil
+          Mi Perfil
         </h1>
         <Form className="bg-white shadow-md rounded-lg p-6 w-full">
           <div className="flex flex-col gap-4">
