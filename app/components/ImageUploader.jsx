@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const MAX_FILES = 5;
 const maxFileSize = 2097152; // 2MB
@@ -9,6 +9,10 @@ const filterImageList = (files) =>
 const ImageUploader = ({ onUpload }) => {
   const [files, setFiles] = useState([]);
   const [currentCarouselPosition, setCarouselPosition] = useState(0);
+
+  useEffect(() => {
+    onUpload(files);
+  }, [files]);
 
   const handleDropFiles = (event) => {
     event.preventDefault();
@@ -31,6 +35,10 @@ const ImageUploader = ({ onUpload }) => {
         MAX_FILES,
       );
     });
+  };
+
+  const deleteFile = (index) => {
+    setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
   return (
@@ -84,6 +92,7 @@ const ImageUploader = ({ onUpload }) => {
               <div
                 key={file.name}
                 className={index === currentCarouselPosition ? "" : "hidden "}
+                onDoubleClick={() => deleteFile(index)}
               >
                 <img
                   src={URL.createObjectURL(file)}

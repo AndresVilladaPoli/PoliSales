@@ -1,5 +1,6 @@
 import { ulid } from "ulid";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
+import { S3Client } from "@aws-sdk/client-s3";
 
 export const validImagesTypes = ["image/png", "image/jpeg", "image/jpg"];
 const maxFileSize = 2097152; // 2MB

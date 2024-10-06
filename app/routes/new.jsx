@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useActionData, useSubmit } from "@remix-run/react";
 import { z } from "zod";
@@ -88,7 +88,23 @@ const formSchema = z.object({
     }),
 });
 
+const uploadFilesToS3 = async (files) => {
+  const mimeTypes = files.map((file) => file.type);
+
+  const urlsPromises = mimeTypes.map(async (mimeType) => {
+    const response = await fetch(`/presignedUrl?mimeType=${mimeType}`);
+    const data = await response.json();
+
+    return data;
+  });
+
+  const urls = await Promise.all(urlsPromises);
+
+  console.log(urls);
+};
+
 export default function New() {
+  const [files, setFiles] = useState([]);
   const submit = useSubmit();
   const actionData = useActionData();
   const {
@@ -108,7 +124,8 @@ export default function New() {
   }, [actionData]);
 
   const handleSubmitForm = (data) => {
-    submit(data, { method: "post", encType: "application/json" });
+    uploadFilesToS3(files).then();
+    // submit(data, { method: "post", encType: "application/json" });
   };
 
   return (
@@ -160,7 +177,7 @@ export default function New() {
             label="Precio"
             className="mb-4 border border-[#1c6b44] rounded-md p-2"
           />
-          <ImageUploader />
+          <ImageUploader onUpload={setFiles} />
           <Button
             name="Publicar"
             type="submit"
