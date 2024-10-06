@@ -27,12 +27,16 @@ custom:
           - "**/*.*":
               CacheControl: "public, max-age=31536000"
       - bucketNameKey: WebsiteBucketName
-        localDir: public
+        bucketPrefix: public/img/
+        localDir: build/client/img
+        params:
+          - "**/*.*":
+              CacheControl: "public, max-age=31536000"
+      - bucketNameKey: WebsiteBucketName
+        localDir: build/client/favicon.ico
         params:
           - favicon.ico:
               CacheControl: "public, max-age=3600"
-          - "**/*.*":
-              CacheControl: "public, max-age=31536000"
 
 provider:
   name: aws
