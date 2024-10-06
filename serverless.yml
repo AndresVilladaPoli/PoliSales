@@ -33,7 +33,7 @@ custom:
           - "**/*.*":
               CacheControl: "public, max-age=31536000"
       - bucketNameKey: WebsiteBucketName
-        localDir: public/favicon.ico
+        localDir: public
         params:
           - favicon.ico:
               CacheControl: "public, max-age=3600"
