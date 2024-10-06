@@ -2,7 +2,6 @@ import { createCookieSessionStorage, redirect } from "@remix-run/node";
 import createUserDb from "./dynamodb/user/createUser";
 import getUserByEmail from "./dynamodb/user/getUserByEmail";
 import User from "../models/User";
-import UserDTO from "./dynamodb/dto/UserDTO";
 
 const { SESSION_SECRET } = process.env;
 
@@ -40,20 +39,23 @@ export async function createUserSession({
 }
 
 export async function destroyUserSession(request) {
+  const session = await sessionStorage.getSession(
+    request.headers.get("Cookie"),
+  );
+
+  const response = await sessionStorage.destroySession(session);
+
   const logoutSearchParams = new URLSearchParams();
   logoutSearchParams.append("client_id", process.env.APP_CLIENT_ID);
   logoutSearchParams.append("logout_uri", `${process.env.DOMAIN}/login`);
   logoutSearchParams.append("redirect_uri", `${process.env.DOMAIN}/login`);
-
-  const session = await sessionStorage.getSession(
-    request.headers.get("Cookie"),
-  );
+  logoutSearchParams.append("response_type", "code");
 
   return redirect(
     `${process.env.COGNITO_DOMAIN}/logout?${logoutSearchParams.toString()}`,
     {
       headers: {
-        "Set-Cookie": await sessionStorage.destroySession(session),
+        "Set-Cookie": response,
       },
     },
   );

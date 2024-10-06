@@ -21,7 +21,7 @@ export async function loader({ request }) {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
         Authorization: `Basic ${Buffer.from(
-          `${APP_CLIENT_ID}:${APP_CLIENT_SECRET}`
+          `${APP_CLIENT_ID}:${APP_CLIENT_SECRET}`,
         ).toString("base64")}`,
       },
       body: new URLSearchParams({
@@ -78,6 +78,8 @@ export default function Login() {
 
   logoutSearchParams.append("client_id", data.ENV.APP_CLIENT_ID);
   logoutSearchParams.append("logout_uri", `${data.ENV.DOMAIN}/login`);
+  logoutSearchParams.append("redirect_uri", `${data.ENV.DOMAIN}/login`);
+  logoutSearchParams.append("response_type", "code");
 
   const handleLogin = () => {
     // mostrar spinner
