@@ -11,6 +11,7 @@ import Button from "../components/Button";
 import Select from "../components/Select";
 import Publication from "../models/Publication";
 import createPublication from "../data/dynamodb/publications/createPublication";
+import ImageUploader from "../components/ImageUploader";
 
 export function loader({ request }) {
   return requireUserSession(request);
@@ -114,7 +115,9 @@ export default function New() {
     <div className="h-screen flex flex-col items-center bg-[#cedad3]">
       <Nav />
       <main className="flex-grow mt-8 w-full max-w-xl p-4 bg-white rounded-md shadow-lg">
-        <h1 className="text-2xl font-bold text-[#1c6b44] mb-6 text-center">Crea una Nueva Publicación</h1>
+        <h1 className="text-2xl font-bold text-[#1c6b44] mb-6 text-center">
+          Crea una Nueva Publicación
+        </h1>
         <Form onSubmit={handleSubmit(handleSubmitForm)}>
           <Select
             {...register("category")}
@@ -157,10 +160,17 @@ export default function New() {
             label="Precio"
             className="mb-4 border border-[#1c6b44] rounded-md p-2"
           />
-          <Button name="Publicar" type="submit" className="bg-[#1c6b44] text-white px-4 py-2 rounded-md hover:bg-green-700 transition" />
+          <ImageUploader />
+          <Button
+            name="Publicar"
+            type="submit"
+            className="bg-[#1c6b44] text-white px-4 py-2 rounded-md hover:bg-green-700 transition"
+          />
         </Form>
         {actionData?.isSuccess && (
-          <p className="text-[#1c6b44] mt-4">Se ha creado la publicación correctamente</p>
+          <p className="text-[#1c6b44] mt-4">
+            Se ha creado la publicación correctamente
+          </p>
         )}
         {!actionData?.isSuccess && (
           <p className="text-red-600 mt-4">{actionData?.error || ""}</p>
@@ -169,4 +179,3 @@ export default function New() {
     </div>
   );
 }
-

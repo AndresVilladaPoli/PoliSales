@@ -55,6 +55,7 @@ provider:
     DYNAMODB_TABLE_GSI5: GSI5
     DYNAMODB_TABLE_GSI6: GSI6
     DOMAIN: https://d373ge575lxvrz.cloudfront.net
+    FILES_BUCKET: !Ref FilesBucket
 
 functions:
   remix:
