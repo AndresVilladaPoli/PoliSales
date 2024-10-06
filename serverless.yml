@@ -8,6 +8,7 @@ package:
 plugins:
   - serverless-esbuild
   - serverless-s3-sync
+  - serverless-iam-roles-per-function
 
 custom:
   esbuild:
@@ -65,6 +66,53 @@ functions:
       COGNITO_DOMAIN: https://polisale.auth.us-east-1.amazoncognito.com
       APP_CLIENT_ID: 71lsi0atv0kc0km0tomrsi4gfg
       APP_CLIENT_SECRET: 1ddf9n1ehtjgh8lh1va30f9vd2bsi95cl1ehadl858aidagdjbmv
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - dynamodb:*
+        Resource: !GetAtt PoliSalesTable.Arn
+      - Effect: "Allow"
+        Action:
+          - dynamodb:*
+        Resource: !Join
+          - ""
+          - - !GetAtt PoliSalesTable.Arn
+            - "/index/GSI1"
+      - Effect: "Allow"
+        Action:
+          - dynamodb:*
+        Resource: !Join
+          - ""
+          - - !GetAtt PoliSalesTable.Arn
+            - "/index/GSI2"
+      - Effect: "Allow"
+        Action:
+          - dynamodb:*
+        Resource: !Join
+          - ""
+          - - !GetAtt PoliSalesTable.Arn
+            - "/index/GSI3"
+      - Effect: "Allow"
+        Action:
+          - dynamodb:*
+        Resource: !Join
+          - ""
+          - - !GetAtt PoliSalesTable.Arn
+            - "/index/GSI4"
+      - Effect: "Allow"
+        Action:
+          - dynamodb:*
+        Resource: !Join
+          - ""
+          - - !GetAtt PoliSalesTable.Arn
+            - "/index/GSI5"
+      - Effect: "Allow"
+        Action:
+          - dynamodb:*
+        Resource: !Join
+          - ""
+          - - !GetAtt PoliSalesTable.Arn
+            - "/index/GSI6"
     events:
       - httpApi:
           method: any

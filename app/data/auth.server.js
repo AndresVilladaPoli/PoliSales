@@ -43,6 +43,7 @@ export async function destroyUserSession(request) {
   const logoutSearchParams = new URLSearchParams();
   logoutSearchParams.append("client_id", process.env.APP_CLIENT_ID);
   logoutSearchParams.append("logout_uri", `${process.env.DOMAIN}/login`);
+  logoutSearchParams.append("redirect_uri", `${process.env.DOMAIN}/login`);
 
   const session = await sessionStorage.getSession(
     request.headers.get("Cookie"),
