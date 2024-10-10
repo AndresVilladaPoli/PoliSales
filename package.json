@@ -8,7 +8,9 @@
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
-    "deploy": "npm run build && sls deploy --verbose"
+    "deploy": "npm run build && sls deploy --verbose",
+    "e2e:open": "cypress open",
+    "test:e2e": "cypress run"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.656.0",
