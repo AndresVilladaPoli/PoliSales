@@ -1,18 +1,31 @@
 describe('Prueba de inicio de sesión', () => {
-    it('Debería permitir al usuario iniciar sesión correctamente', () => {
+  it('Debería permitir al usuario iniciar sesión correctamente', () => {
+    
+   
+    cy.visit('https://d373ge575lxvrz.cloudfront.net/');
+
+    
+    cy.contains('Iniciar sesión con Google').click();
+
+    
+    cy.origin('https://accounts.google.com', () => {
       
-      cy.visit('https://d373ge575lxvrz.cloudfront.net/login');
+      
+      cy.get('#identifierId').type('mateo_echeverri82201@elpoli.edu.co');
 
-      cy.contains('Iniciar sesión con Google').click();
+      
+      cy.contains('Siguiente').click();
 
-      cy.get('li') 
-        .filter((index, element) => {
-          return $(element).text().endsWith('@elpoli.edu.co');
-        }) 
-        .first() 
-        .click(); 
-          
-   /*   cy.url().should('include', '/dashboard'); */
+      
+    /*  cy.get('input[type="password"]').type('elpoli201');
 
+      
+      cy.contains('Siguiente').click(); */ 
     });
+
+    
+    // cy.url().should('include', '/dashboard');
+
+  });
 });
+

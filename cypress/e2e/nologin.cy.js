@@ -1,7 +1,7 @@
 describe('Prueba de inicio de sesión', () => {
     it('No debería permitir al usuario iniciar sesión con un correo incorrecto', () => {
       
-      cy.visit('https://d373ge575lxvrz.cloudfront.net/login');
+      cy.visit('http://localhost:5173/');
 
       cy.contains('Iniciar sesión con Google').click();
 
