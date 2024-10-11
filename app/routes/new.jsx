@@ -122,13 +122,17 @@ const uploadFilesToS3 = async (files) => {
         );
       }
 
-      return `${url}${fields.key}`;
+      if (url.contains("localhost")) {
+        return `${url}${fields.key}`;
+      }
+
+      return `https://${fields.bucket}.s3.amazonaws.com/${fields.key}`;
     },
   );
 
   const urls = await Promise.all(filesUrls);
 
-  console.log(urls);
+  return urls;
 };
 
 export default function New() {
@@ -152,8 +156,12 @@ export default function New() {
   }, [actionData]);
 
   const handleSubmitForm = (data) => {
-    uploadFilesToS3(files).then();
-    // submit(data, { method: "post", encType: "application/json" });
+    uploadFilesToS3(files).then((urls) => {
+      submit(
+        { ...data, images: urls },
+        { method: "post", encType: "application/json" },
+      );
+    });
   };
 
   return (
