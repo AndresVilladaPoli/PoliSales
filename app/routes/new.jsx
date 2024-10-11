@@ -122,7 +122,7 @@ const uploadFilesToS3 = async (files) => {
         );
       }
 
-      if (url.contains("localhost")) {
+      if (url.includes("localhost")) {
         return `${url}${fields.key}`;
       }
 
@@ -161,6 +161,8 @@ export default function New() {
         { ...data, images: urls },
         { method: "post", encType: "application/json" },
       );
+
+      setFiles([]);
     });
   };
 
@@ -213,7 +215,7 @@ export default function New() {
             label="Precio"
             className="mb-4 border border-[#1c6b44] rounded-md p-2"
           />
-          <ImageUploader onUpload={setFiles} />
+          <ImageUploader setFiles={setFiles} files={files} />
           <Button
             name="Publicar"
             type="submit"

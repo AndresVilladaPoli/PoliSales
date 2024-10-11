@@ -6,12 +6,11 @@ const maxFileSize = 2097152; // 2MB
 const filterImageList = (files) =>
   Array.from(files).filter((file) => file.size <= maxFileSize);
 
-const ImageUploader = ({ onUpload }) => {
-  const [files, setFiles] = useState([]);
+const ImageUploader = ({ setFiles, files }) => {
   const [currentCarouselPosition, setCarouselPosition] = useState(0);
 
   useEffect(() => {
-    onUpload(files);
+    setCarouselPosition(0);
   }, [files]);
 
   const handleDropFiles = (event) => {
