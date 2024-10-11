@@ -1,2 +1,3 @@
 #!/bin/bash
-aws --endpoint-url=http://localhost:4566 s3 mb s3://polisales-bucket
+awslocal s3api create-bucket --bucket polisales-bucket
+awslocal s3api put-bucket-cors --bucket polisales-bucket --cors-configuration file:///etc/localstack/init/ready.d/localstack-s3-cors.json

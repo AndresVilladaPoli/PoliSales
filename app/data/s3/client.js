@@ -5,7 +5,7 @@ const isDev = process.env.NODE_ENV === "development";
 const createClient = () => {
   if (isDev) {
     return new S3Client({
-      endpoint: "http://localhost:4566",
+      endpoint: "http://s3.eu-east-1.localhost.localstack.cloud:4566",
       accessKeyId: "test",
       secretAccessKey: "test",
       s3ForcePathStyle: true,

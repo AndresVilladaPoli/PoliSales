@@ -98,7 +98,35 @@ const uploadFilesToS3 = async (files) => {
     return data;
   });
 
-  const urls = await Promise.all(urlsPromises);
+  const presignedInfo = await Promise.all(urlsPromises);
+
+  const filesUrls = presignedInfo.map(
+    async ({ presignedUrl: { url, fields } }, index) => {
+      const formData = new FormData();
+      Object.entries(fields).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+
+      formData.append("file", files[index]);
+
+      const response = await fetch(url, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          "Error uploading file",
+          response.statusText,
+          files[index],
+        );
+      }
+
+      return `${url}${fields.key}`;
+    },
+  );
+
+  const urls = await Promise.all(filesUrls);
 
   console.log(urls);
 };
