@@ -1,12 +1,9 @@
 import { ulid } from "ulid";
 import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
-import { S3Client } from "@aws-sdk/client-s3";
+import s3Client from "./s3/client";
 
 export const validImagesTypes = ["image/png", "image/jpeg", "image/jpg"];
 const maxFileSize = 2097152; // 2MB
-
-// Esto solo funciona en la nube
-const s3Client = new S3Client({});
 
 export const createPresignedUrl = async (mimeType) => {
   if (!validImagesTypes.includes(mimeType)) {
