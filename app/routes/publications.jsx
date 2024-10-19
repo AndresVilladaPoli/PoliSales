@@ -4,6 +4,8 @@ import { useState } from "react";
 import { requireUserSession } from "../data/auth.server";
 import getMyPublications from "../data/dynamodb/publications/getMyPublications";
 import Nav from "../layouts/Nav";
+import SearchInput from "../components/SearchInput";
+import Publication from "../components/Publication";
 
 export async function loader({ request }) {
   const user = await requireUserSession(request);
@@ -24,9 +26,12 @@ export async function loader({ request }) {
   });
 }
 
+// TODO: Implementar paginación
+
 export default function Publications() {
   const { publications, nextKey } = useLoaderData();
   const [previousKeys, setPreviousKeys] = useState([]);
+  const [searchKey, setSearchKey] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleNextPage = () => {
@@ -40,9 +45,13 @@ export default function Publications() {
     setSearchParams({ fromId: previousKey });
   };
 
-  const handleSearchKey = (e) => {
-    e.preventDefault();
-    setSearchParams({ searchKey: e.target.value });
+  const handleStartSearch = () => {
+    setSearchParams({ searchKey });
+    setSearchKey("");
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchKey(e.target.value);
   };
 
   return (
@@ -52,7 +61,16 @@ export default function Publications() {
         <h1 className="text-4xl font-bold text-center text-[#1c6b44] mb-6">
           Mis Publicaciones
         </h1>
-        <div className="w-full grid grid-cols-1 gap-4"></div>
+        <SearchInput
+          searchKey={searchKey}
+          onChange={handleSearchChange}
+          onSearch={handleStartSearch}
+        />
+        <div className="w-full grid grid-cols-1 gap-4">
+          {publications.map((publication) => (
+            <Publication publication={publication} key={publication.id} />
+          ))}
+        </div>
       </main>
     </div>
   );

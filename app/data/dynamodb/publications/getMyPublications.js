@@ -4,6 +4,15 @@ import PublicationDTO from "../dto/PublicationDTO";
 const LIMIT_SEARCH = 50;
 
 const getMyPublications = async ({ fromId, searchKey, userEmail }) => {
+  const expressionAttributeValues = {
+    ":GSI2PK": `User#${userEmail}`,
+    ":GSI2SK": "Publication#",
+  };
+
+  if (searchKey) {
+    expressionAttributeValues[":searchKey"] = searchKey;
+  }
+
   const { items, lastEvaluatedKey } = await queryItems({
     indexName: "GSI2",
     keyConditionExpression: "GSI2PK = :GSI2PK AND begins_with(GSI2SK, :GSI2SK)",
@@ -14,11 +23,7 @@ const getMyPublications = async ({ fromId, searchKey, userEmail }) => {
     filterExpression: searchKey
       ? "contains(searchKeyTitle, :searchKey)"
       : undefined,
-    expressionAttributeValues: {
-      ":GSI2PK": `User#${userEmail}`,
-      ":GSI2SK": "Publication#",
-      ":searchKey": searchKey,
-    },
+    expressionAttributeValues,
   });
 
   return {
