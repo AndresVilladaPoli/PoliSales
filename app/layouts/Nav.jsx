@@ -25,10 +25,10 @@ const Nav = () => {
             Bienvenido a POLIsales
           </h1>
         </div>
-        <img 
-          src="../public/img/logo_polisales_white.png" 
-          alt="Logo" 
-          className="absolute right-8 top-1/2 transform -translate-y-1/2 h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20" 
+        <img
+          src="../public/img/logo_polisales_white.png"
+          alt="Logo"
+          className="absolute right-8 top-1/2 transform -translate-y-1/2 h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20"
         />
       </header>
 

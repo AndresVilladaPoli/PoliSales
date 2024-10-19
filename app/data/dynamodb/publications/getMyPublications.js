@@ -18,7 +18,12 @@ const getMyPublications = async ({ fromId, searchKey, userEmail }) => {
     keyConditionExpression: "GSI2PK = :GSI2PK AND begins_with(GSI2SK, :GSI2SK)",
     limit: LIMIT_SEARCH,
     startFromKey: fromId
-      ? { GSI2PK: `User#${userEmail}`, GSI2SK: `Publication#${fromId}` }
+      ? {
+          PK: `Publication#${fromId}`,
+          SK: `Publication#${fromId}`,
+          GSI2PK: `User#${userEmail}`,
+          GSI2SK: `Publication#${fromId}`,
+        }
       : undefined,
     filterExpression: searchKey
       ? "contains(searchKeyTitle, :searchKey)"

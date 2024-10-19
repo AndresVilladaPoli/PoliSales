@@ -10,16 +10,16 @@ export const orderAndFilterBy = {
 const filterKeys = {
   [orderAndFilterBy.creationDate]: {
     indexName: "GSI6",
-    keyConditionExpression: "GSI6PK = Publication",
+    keyConditionExpression: "GSI6PK = :GSI6PK",
   },
   [orderAndFilterBy.price]: {
     indexName: "GSI5",
     keyConditionExpression:
-      "GSI5PK = Publication AND GSI5SK BETWEEN :start AND :end",
+      "GSI5PK = :GSI5PK AND GSI5SK BETWEEN :start AND :end",
   },
   [orderAndFilterBy.category]: {
     indexName: "GSI4",
-    keyConditionExpression: "GSI4PK = Publication AND GSI4SK = :category",
+    keyConditionExpression: "GSI4PK = :GSI4PK AND GSI4SK = :category",
   },
 };
 
@@ -53,17 +53,30 @@ const getAllPublications = async ({
     }
   }
 
+  if (orderBy === orderAndFilterBy.creationDate) {
+    expressionAttributeValues[":GSI6PK"] = "Publication";
+  } else if (orderBy === orderAndFilterBy.price) {
+    expressionAttributeValues[":GSI5PK"] = "Publication";
+  } else if (orderBy === orderAndFilterBy.category) {
+    expressionAttributeValues[":GSI4PK"] = "Publication";
+  }
+  console.log(filterKeys[orderBy]);
   const { items, lastEvaluatedKey } = await queryItems({
     ...filterKeys[orderBy],
     limit: LIMIT_SEARCH,
-    filterExpression,
-    startFromKey: nextKey,
+    filterExpression: filterExpression ? filterExpression : undefined,
+    startFromKey: nextKey
+      ? {
+          PK: `Publication#${nextKey}`,
+          SK: `Publication#${nextKey}`,
+        }
+      : null,
     expressionAttributeValues,
   });
 
   return {
     items: items.map((item) => PublicationDTO.toPublication(item)),
-    nextKey: lastEvaluatedKey,
+    nextKey: lastEvaluatedKey ? lastEvaluatedKey.PK.split("#")[1] : null,
   };
 };
 

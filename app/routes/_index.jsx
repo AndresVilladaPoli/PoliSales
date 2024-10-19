@@ -1,16 +1,63 @@
+import { useSearchParams, useLoaderData } from "@remix-run/react";
+import { json } from "@remix-run/react";
+import { useState } from "react";
 import { requireUserSession } from "../data/auth.server";
 import Nav from "../layouts/Nav";
+import getAllPublications, {
+  orderAndFilterBy,
+} from "../data/dynamodb/publications/getAllPublications";
+import SearchInput from "../components/SearchInput";
+import Publication from "../components/Publication";
 
-export function loader({ request }) {
-  return requireUserSession(request);
+export async function loader({ request }) {
+  const user = await requireUserSession(request);
+
+  const searchParams = new URLSearchParams(request.url.split("?")[1]);
+  const fromId = searchParams.get("fromId");
+  const title = searchParams.get("title");
+  const orderBy = searchParams.get("orderBy");
+
+  const { items, nextKey } = await getAllPublications({
+    nextKey: fromId,
+    searchKey: {
+      searchKeyTitle: title,
+    },
+    orderBy: orderBy || orderAndFilterBy.creationDate,
+  });
+
+  return json({
+    publications: items,
+    nextKey,
+  });
 }
 
-export default function Index() {          //Simulaciones ficticias
-  const publicaciones = [
-    { id: 1, titulo: "Publicación 1", contenido: "Contenido de la primera publicación" },
-    { id: 2, titulo: "Publicación 2", contenido: "Contenido de la segunda publicación" },
-    { id: 3, titulo: "Publicación 3", contenido: "Contenido de la tercera publicación" },
-  ];
+// TODO: Implementar paginación
+
+export default function Index() {
+  const { publications, nextKey } = useLoaderData();
+  const [previousKeys, setPreviousKeys] = useState([]);
+  const [searchKey, setSearchKey] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleNextPage = () => {
+    setPreviousKeys((prev) => [...prev, searchParams.get("fromId")]);
+    setSearchParams({ fromId: nextKey });
+  };
+
+  const handlePreviousPage = () => {
+    const previousKey = previousKeys.pop();
+    setPreviousKeys(previousKeys);
+    setSearchParams({ fromId: previousKey });
+  };
+
+  const handleStartSearch = () => {
+    setSearchParams({ title: searchKey });
+    setSearchKey("");
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchKey(e.target.value);
+  };
 
   return (
     <div className="h-screen flex flex-col items-center bg-[#cedad3]">
@@ -19,17 +66,17 @@ export default function Index() {          //Simulaciones ficticias
         <h1 className="text-4xl font-bold text-center text-[#1c6b44] mb-6 w-full">
           Publicaciones
         </h1>
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {publicaciones.map((publicacion) => (
-            <div key={publicacion.id} className="bg-white p-4 shadow-md rounded-lg">
-              <h2 className="text-xl font-semibold text-[#1c6b44]">{publicacion.titulo}</h2>
-              <p className="text-gray-700 mt-2">{publicacion.contenido}</p>
-            </div>
+        <SearchInput
+          searchKey={searchKey}
+          onChange={handleSearchChange}
+          onSearch={handleStartSearch}
+        />
+        <div className="w-full grid grid-cols-1 gap-4">
+          {publications.map((publication) => (
+            <Publication publication={publication} key={publication.id} />
           ))}
         </div>
       </main>
     </div>
   );
 }
-
-
