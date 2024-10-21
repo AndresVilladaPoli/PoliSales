@@ -35,14 +35,18 @@ export default function Publications() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleNextPage = () => {
-    setPreviousKeys((prev) => [...prev, searchParams.get("fromId")]);
-    setSearchParams({ fromId: nextKey });
+    if (nextKey) {
+      setPreviousKeys((prev) => [...prev, searchParams.get("fromId")]);
+      setSearchParams({ fromId: nextKey });
+    }
   };
 
   const handlePreviousPage = () => {
     const previousKey = previousKeys.pop();
-    setPreviousKeys(previousKeys);
-    setSearchParams({ fromId: previousKey });
+    if (previousKey) {
+      setPreviousKeys(previousKeys);
+      setSearchParams({ fromId: previousKey });
+    }
   };
 
   const handleStartSearch = () => {
@@ -62,7 +66,7 @@ export default function Publications() {
           Mis Publicaciones
         </h1>
         <SearchInput
-          searchKey={searchKey}
+          value={searchKey}
           onChange={handleSearchChange}
           onSearch={handleStartSearch}
         />
@@ -71,7 +75,29 @@ export default function Publications() {
             <Publication publication={publication} key={publication.id} />
           ))}
         </div>
+
+        <div className="flex justify-between mt-4"> 
+          <button
+            onClick={handlePreviousPage}
+            disabled={previousKeys.length === 0}
+            className={`${
+              previousKeys.length === 0 ? "bg-gray-400" : "bg-[#1c6b44] hover:bg-[#145732]"
+            } text-white font-medium rounded-lg text-sm px-5 py-2.5`}
+          >
+            Anterior
+          </button>
+          <button
+            onClick={handleNextPage}
+            disabled={!nextKey}
+            className={`${
+              !nextKey ? "bg-gray-400" : "bg-[#1c6b44] hover:bg-[#145732]"
+            } text-white font-medium rounded-lg text-sm px-5 py-2.5`}
+          >
+            Siguiente
+          </button>
+        </div>
       </main>
     </div>
   );
 }
+
