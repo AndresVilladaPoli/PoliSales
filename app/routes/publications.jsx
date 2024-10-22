@@ -26,8 +26,6 @@ export async function loader({ request }) {
   });
 }
 
-// TODO: Implementar paginación
-
 export default function Publications() {
   const { publications, nextKey } = useLoaderData();
   const [previousKeys, setPreviousKeys] = useState([]);
@@ -70,7 +68,8 @@ export default function Publications() {
           onChange={handleSearchChange}
           onSearch={handleStartSearch}
         />
-        <div className="w-full grid grid-cols-1 gap-4">
+        
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
           {publications.map((publication) => (
             <Publication publication={publication} key={publication.id} />
           ))}
@@ -100,4 +99,3 @@ export default function Publications() {
     </div>
   );
 }
-

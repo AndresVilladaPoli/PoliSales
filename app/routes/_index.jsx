@@ -71,10 +71,32 @@ export default function Index() {
           onChange={handleSearchChange}
           onSearch={handleStartSearch}
         />
-        <div className="w-full grid grid-cols-1 gap-4">
+        
+        {/* Para las columnas de publicaciones */}
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {publications.map((publication) => (
             <Publication publication={publication} key={publication.id} />
           ))}
+        </div>
+        <div className="flex justify-between mt-4">
+          <button
+            onClick={handlePreviousPage}
+            disabled={previousKeys.length === 0}
+            className={`${
+              previousKeys.length === 0 ? "bg-gray-400" : "bg-[#1c6b44] hover:bg-[#145732]"
+            } text-white font-medium rounded-lg text-sm px-5 py-2.5`}
+          >
+            Anterior
+          </button>
+          <button
+            onClick={handleNextPage}
+            disabled={!nextKey}
+            className={`${
+              !nextKey ? "bg-gray-400" : "bg-[#1c6b44] hover:bg-[#145732]"
+            } text-white font-medium rounded-lg text-sm px-5 py-2.5`}
+          >
+            Siguiente
+          </button>
         </div>
       </main>
     </div>
