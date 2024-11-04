@@ -34,22 +34,27 @@ const getAllPublications = async ({
   let filterExpression;
 
   if (searchKey) {
+    console.log * ("searchKey", searchKey);
     if (searchKey.searchKeyTitle) {
       expressionAttributeValues[":searchKey"] = searchKey.searchKeyTitle;
-      filterExpression = "contains(searchKeyTitle, :searchKey)";
+      filterExpression = !filterExpression
+        ? "contains(searchKeyTitle, :searchKey)"
+        : filterExpression + " AND contains(searchKeyTitle, :searchKey)";
     }
 
     if (searchKey.category) {
-      expressionAttributeValues[
-        ":category"
-      ] = `Publication#${searchKey.category}`;
+      expressionAttributeValues[":category"] = searchKey.category;
+      filterExpression = !filterExpression
+        ? "category = :category"
+        : filterExpression + " AND category = :category";
     }
 
-    if (searchKey.price) {
-      expressionAttributeValues[
-        ":start"
-      ] = `Publication#${searchKey.price.start}`;
-      expressionAttributeValues[":end"] = `Publication#${searchKey.price.end}`;
+    if (searchKey.price && searchKey.price.start && searchKey.price.end) {
+      expressionAttributeValues[":start"] = +searchKey.price.start;
+      expressionAttributeValues[":end"] = +searchKey.price.end;
+      filterExpression = !filterExpression
+        ? "price BETWEEN :start AND :end"
+        : filterExpression + " AND price BETWEEN :start AND :end";
     }
   }
 
@@ -60,7 +65,7 @@ const getAllPublications = async ({
   } else if (orderBy === orderAndFilterBy.category) {
     expressionAttributeValues[":GSI4PK"] = "Publication";
   }
-  console.log(filterKeys[orderBy]);
+
   const { items, lastEvaluatedKey } = await queryItems({
     ...filterKeys[orderBy],
     limit: LIMIT_SEARCH,

@@ -8,6 +8,19 @@ import getAllPublications, {
 } from "../data/dynamodb/publications/getAllPublications";
 import SearchInput from "../components/SearchInput";
 import Publication from "../components/Publication";
+import SelectInput from "../components/SelectInput";
+import PublicationModel from "../models/Publication";
+import PriceRange from "../components/PriceRange";
+
+const categories = [
+  { value: PublicationModel.CATEGORIA_INMUEBLE, option: "Inmueble" },
+  { value: PublicationModel.CATEGORIA_VEHICULO, option: "Vehículo" },
+  { value: PublicationModel.CATEGORIA_INSTITUCIONAL, option: "Institucional" },
+  { value: PublicationModel.CATEGORIA_LIBROS, option: "Libros" },
+  { value: PublicationModel.CATEGORIA_MASCOTAS, option: "Mascotas" },
+  { value: PublicationModel.CATEGORIA_PERSONALES, option: "Personales" },
+  { value: PublicationModel.CATEGORIA_SERVICIOS, option: "Servicios" },
+];
 
 export async function loader({ request }) {
   const user = await requireUserSession(request);
@@ -15,12 +28,20 @@ export async function loader({ request }) {
   const searchParams = new URLSearchParams(request.url.split("?")[1]);
   const fromId = searchParams.get("fromId");
   const title = searchParams.get("title");
+  const category = searchParams.get("category");
+  const priceStart = searchParams.get("priceStart");
+  const priceEnd = searchParams.get("priceEnd");
   const orderBy = searchParams.get("orderBy");
 
   const { items, nextKey } = await getAllPublications({
     nextKey: fromId,
     searchKey: {
       searchKeyTitle: title,
+      category,
+      price: {
+        start: priceStart || 0,
+        end: priceEnd || 10000000,
+      },
     },
     orderBy: orderBy || orderAndFilterBy.creationDate,
   });
@@ -41,17 +62,29 @@ export default function Index() {
 
   const handleNextPage = () => {
     setPreviousKeys((prev) => [...prev, searchParams.get("fromId")]);
-    setSearchParams({ fromId: nextKey });
+    setSearchParams((prevVals) => {
+      prevVals.delete("fromId");
+      prevVals.append("fromId", nextKey);
+      return prevVals;
+    });
   };
 
   const handlePreviousPage = () => {
     const previousKey = previousKeys.pop();
     setPreviousKeys(previousKeys);
-    setSearchParams({ fromId: previousKey });
+    setSearchParams((prevVals) => {
+      prevVals.delete("fromId");
+      prevVals.append("fromId", previousKey);
+      return prevVals;
+    });
   };
 
   const handleStartSearch = () => {
-    setSearchParams({ title: searchKey });
+    setSearchParams((prevVals) => {
+      prevVals.delete("title");
+      prevVals.append("title", searchKey);
+      return prevVals;
+    });
     setSearchKey("");
   };
 
@@ -71,7 +104,34 @@ export default function Index() {
           onChange={handleSearchChange}
           onSearch={handleStartSearch}
         />
-        
+        <SelectInput
+          label="Selecciona una categoría"
+          values={categories}
+          onChange={(value) =>
+            setSearchParams((prevVals) => {
+              prevVals.delete("category");
+              prevVals.append("category", value);
+              return prevVals;
+            })
+          }
+        />
+        <PriceRange
+          onNewStart={(value) =>
+            setSearchParams((searchParams) => {
+              searchParams.delete("priceStart");
+              searchParams.append("priceStart", value);
+              return searchParams;
+            })
+          }
+          onNewEnd={(value) =>
+            setSearchParams((searchParams) => {
+              searchParams.delete("priceEnd");
+              searchParams.append("priceEnd", value);
+              return searchParams;
+            })
+          }
+        />
+
         {/* Para las columnas de publicaciones */}
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {publications.map((publication) => (
@@ -83,7 +143,9 @@ export default function Index() {
             onClick={handlePreviousPage}
             disabled={previousKeys.length === 0}
             className={`${
-              previousKeys.length === 0 ? "bg-gray-400" : "bg-[#1c6b44] hover:bg-[#145732]"
+              previousKeys.length === 0
+                ? "bg-gray-400"
+                : "bg-[#1c6b44] hover:bg-[#145732]"
             } text-white font-medium rounded-lg text-sm px-5 py-2.5`}
           >
             Anterior
