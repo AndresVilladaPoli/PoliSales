@@ -1,6 +1,6 @@
 import { useSearchParams, useLoaderData } from "@remix-run/react";
-import { json } from "@remix-run/react";
-import { useState } from "react";
+import { json } from "@remix-run/node"; 
+import { useState, useEffect } from "react";
 import { requireUserSession } from "../data/auth.server";
 import Nav from "../layouts/Nav";
 import getAllPublications, {
@@ -52,13 +52,18 @@ export async function loader({ request }) {
   });
 }
 
-// TODO: Implementar paginación
-
 export default function Index() {
   const { publications, nextKey } = useLoaderData();
   const [previousKeys, setPreviousKeys] = useState([]);
   const [searchKey, setSearchKey] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    document.body.style.backgroundColor = "#cedad3"; // Fondo de la página
+    return () => {
+      document.body.style.backgroundColor = ""; // Limpia el color al salir
+    };
+  }, []);
 
   const handleNextPage = () => {
     setPreviousKeys((prev) => [...prev, searchParams.get("fromId")]);
@@ -93,7 +98,7 @@ export default function Index() {
   };
 
   return (
-    <div className="h-screen flex flex-col items-center bg-[#cedad3]">
+    <div className="min-h-screen flex flex-col items-center bg-[#cedad3]">
       <Nav />
       <main className="flex-grow mt-6 px-4 sm:px-0 w-full max-w-4xl">
         <h1 className="text-4xl font-bold text-center text-[#1c6b44] mb-6 w-full">
@@ -107,6 +112,7 @@ export default function Index() {
         <SelectInput
           label="Selecciona una categoría"
           values={categories}
+          className="bg-white text-gray-800 border border-gray-300 p-2 rounded" // Fondo blanco para dropdown
           onChange={(value) =>
             setSearchParams((prevVals) => {
               prevVals.delete("category");
@@ -116,6 +122,7 @@ export default function Index() {
           }
         />
         <PriceRange
+          className="bg-white text-gray-800 border border-gray-300 p-2 rounded" // Fondo blanco para filtro de precios
           onNewStart={(value) =>
             setSearchParams((searchParams) => {
               searchParams.delete("priceStart");
@@ -132,8 +139,8 @@ export default function Index() {
           }
         />
 
-        {/* Para las columnas de publicaciones */}
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Grid de publicaciones */}
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
           {publications.map((publication) => (
             <Publication publication={publication} key={publication.id} />
           ))}
@@ -146,7 +153,7 @@ export default function Index() {
               previousKeys.length === 0
                 ? "bg-gray-400"
                 : "bg-[#1c6b44] hover:bg-[#145732]"
-            } text-white font-medium rounded-lg text-sm px-5 py-2.5`}
+            } text-white font-medium rounded-lg text-sm px-5 py-2.5`} // Botón verde
           >
             Anterior
           </button>
@@ -155,7 +162,7 @@ export default function Index() {
             disabled={!nextKey}
             className={`${
               !nextKey ? "bg-gray-400" : "bg-[#1c6b44] hover:bg-[#145732]"
-            } text-white font-medium rounded-lg text-sm px-5 py-2.5`}
+            } text-white font-medium rounded-lg text-sm px-5 py-2.5`} // Botón verde
           >
             Siguiente
           </button>
@@ -164,3 +171,5 @@ export default function Index() {
     </div>
   );
 }
+
+

@@ -161,13 +161,12 @@ export default function New() {
         { ...data, images: urls },
         { method: "post", encType: "application/json" },
       );
-
       setFiles([]);
     });
   };
 
   return (
-    <div className="h-screen flex flex-col items-center bg-[#cedad3]">
+    <div className="min-h-screen flex flex-col items-center bg-[#cedad3]"> {/* Aquí está el cambio */}
       <Nav />
       <main className="flex-grow mt-8 w-full max-w-xl p-4 bg-white rounded-md shadow-lg">
         <h1 className="text-2xl font-bold text-[#1c6b44] mb-6 text-center">
@@ -181,7 +180,7 @@ export default function New() {
             options={categories}
             placeHolder="Selecciona una categoría"
             label="Categoría"
-            className="mb-4 border border-[#1c6b44] rounded-md p-2"
+            className="mb-4 border border-[#1c6b44] rounded-md p-2 bg-white text-black"
           />
           <Input
             {...register("title", {
@@ -234,3 +233,4 @@ export default function New() {
     </div>
   );
 }
+
