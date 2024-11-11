@@ -1,7 +1,7 @@
 import queryItems from "../common/queryItems";
 import ConversationDTO from "../dto/ConversationDTO";
 
-const getConversationsByUserMail = async ({ userEmail }) => {
+const getConversationsByUserMail = async (userEmail) => {
   const allConversations = [];
   const page1 = await queryItems({
     indexName: "GSI1",

@@ -11,3 +11,5 @@ class Message {
 
   static MESSAGE_TYPE_TEXT = "text";
 }
+
+export default Message;
