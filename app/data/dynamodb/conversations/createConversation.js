@@ -3,13 +3,13 @@ import putItem from "../common/putItem";
 import ConversationDTO from "../dto/ConversationDTO";
 
 const createConversation = async (conversation) => {
-  const publicationDTO = ConversationDTO.fromConversation({
+  const conversationDTO = ConversationDTO.fromConversation({
     ...conversation,
     id: ulid(),
     createdAt: Math.floor(Date.now() / 1000),
   });
 
-  await putItem(publicationDTO);
+  await putItem(conversationDTO);
 };
 
 export default createConversation;
