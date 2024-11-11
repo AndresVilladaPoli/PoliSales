@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { useParams, json, useLoaderData } from "@remix-run/react";
 import { getUserFromSession } from "../data/auth.server";
 import Nav from "../layouts/Nav";
 import getMessagesFromConversation from "../data/dynamodb/messages/getMessagesFromConversation";
+import Input from "../components/Input";
 
 export async function loader({ request }) {
   const { params } = request;
@@ -14,12 +16,33 @@ export async function loader({ request }) {
 
   return json({
     messages,
+    loggedUser: user,
   });
 }
 
 export default function Chats() {
+  const [message, setMessage] = useState("");
   const { conversationId } = useParams();
-  const { messages } = useLoaderData();
+  const { messages, loggedUser } = useLoaderData();
+
+  const handleKeyPress = async (e) => {
+    if (e.key === "Enter") {
+      const response = await fetch("/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          conversationId,
+          text: message,
+        }),
+      });
+
+      if (response.ok) {
+        setMessage("");
+      }
+    }
+  };
 
   return (
     <div className="h-screen flex flex-col items-center bg-[#cedad3]">
@@ -39,6 +62,13 @@ export default function Chats() {
             <p className="text-[#1c6b44]">{message.content}</p>
           </div>
         ))}
+        <Input
+          id="message"
+          label="Mensaje"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyPress={handleKeyPress}
+        />
       </main>
     </div>
   );
