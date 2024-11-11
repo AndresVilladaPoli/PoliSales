@@ -1,4 +1,4 @@
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigate, json } from "@remix-run/react";
 import { requireUserSession } from "../data/auth.server";
 import Nav from "../layouts/Nav";
 import getConversationsByUserMail from "../data/dynamodb/conversations/getConversationsByUserMail";
@@ -27,6 +27,7 @@ export async function loader({ request }) {
 
 export default function Chats() {
   const { chats } = useLoaderData();
+  const navigate = useNavigate();
 
   return (
     <div className="h-screen flex flex-col items-center bg-[#cedad3]">
@@ -37,7 +38,11 @@ export default function Chats() {
         </h1>
 
         {chats.map((chat) => (
-          <div key={chat.id} className="bg-white shadow-md rounded-lg p-4 mt-4">
+          <div
+            key={chat.id}
+            className="bg-white shadow-md rounded-lg p-4 mt-4"
+            onClick={() => navigate(`/chats/${chat.id}`)}
+          >
             <h2 className="text-xl font-bold text-[#1c6b44]">
               {chat.senderEmail}
             </h2>

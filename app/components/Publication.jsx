@@ -1,8 +1,26 @@
-import { memo, useState } from "react";
+import { memo } from "react";
+import { useNavigate } from "@remix-run/react";
 import ImageCarrousel from "./ImageCarrousel";
 
 const Publication = ({ publication }) => {
-  const [currentCarouselPosition, setCarouselPosition] = useState(0);
+  const navigate = useNavigate();
+
+  const createConversation = async (publicationId) => {
+    const response = await fetch("/conversation", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        publicationId,
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      navigate(`/chats/${data.conversation.id}`);
+    }
+  };
 
   return (
     <div
@@ -30,7 +48,7 @@ const Publication = ({ publication }) => {
             ${publication.price}
           </span>
           <a
-            href="#"
+            onClick={() => createConversation(publication.id)}
             className="text-white bg-[#1c6b44] hover:bg-[#145732] focus:ring-4 focus:outline-none focus:ring-[#1c6b44] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
             Ver detalles
@@ -42,4 +60,3 @@ const Publication = ({ publication }) => {
 };
 
 export default memo(Publication);
-
