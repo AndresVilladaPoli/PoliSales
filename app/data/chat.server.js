@@ -18,6 +18,7 @@ export const sendMessage = async ({ senderEmail, receiverEmail, text }) => {
     senderId: senderEmail,
     receiverId: receiverEmail,
     text,
+    conversationId: conversation.id,
   });
 
   const savedMessage = await createMessage(newMessage);
@@ -27,12 +28,11 @@ export const sendMessage = async ({ senderEmail, receiverEmail, text }) => {
     oldConversation: conversation,
   });
 
-  return message;
+  return savedMessage;
 };
 
 export const startAChat = async ({ senderEmail, publicationId }) => {
   const publication = await getPublicationById(publicationId);
-
   if (!publication) return null;
 
   const conversation = await getConversationBetweenUsers({
@@ -44,8 +44,8 @@ export const startAChat = async ({ senderEmail, publicationId }) => {
 
   const newConversation = new Conversation({
     senderEmail,
-    receiverEmail: publication.email,
+    receiverEmail: publication.authorEmail,
   });
 
-  return await createConversation(newConversation);
+  return createConversation(newConversation);
 };

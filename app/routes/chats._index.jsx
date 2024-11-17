@@ -46,7 +46,10 @@ export default function Chats() {
             <h2 className="text-xl font-bold text-[#1c6b44]">
               {chat.senderEmail}
             </h2>
-            <p className="text-[#1c6b44]">{chat.receiverEmail}</p>
+            <p className="text-[#6b1c1c]">{chat.receiverEmail}</p>
+            {chat.lastMessage && (
+              <p className="text-[#000000]">{chat.lastMessage.text}</p>
+            )}
           </div>
         ))}
       </main>

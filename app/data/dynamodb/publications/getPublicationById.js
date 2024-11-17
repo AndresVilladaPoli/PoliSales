@@ -3,10 +3,8 @@ import PublicationDTO from "../dto/PublicationDTO";
 
 const getPublicationById = async (publicationId) => {
   const item = await getItemByKey({
-    key: {
-      PK: `Publication#${publicationId}`,
-      SK: `Publication#${publicationId}`,
-    },
+    PK: `Publication#${publicationId}`,
+    SK: `Publication#${publicationId}`,
   });
 
   return item ? PublicationDTO.toPublication(item) : null;

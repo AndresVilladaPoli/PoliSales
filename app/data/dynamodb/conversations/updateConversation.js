@@ -10,12 +10,11 @@ const updateConversation = async ({ newMessage, oldConversation }) => {
       "SET lastMessageId = :lastMessageId, lastActivityAt = :lastActivityAt, GSI1SK = :GSI1SK, GSI2SK = :GSI2SK",
     attributeValues: {
       ":lastMessageId": newMessage.id,
-      ":lastActivityAt": newMessage.createdAt,
-      ":GSI1SK": `Conversation#${newMessage.createdAt}`,
-      ":GSI2SK": `Conversation#${newMessage.createdAt}`,
+      ":lastActivityAt": newMessage.sentAt,
+      ":GSI1SK": `Conversation#${newMessage.sentAt}`,
+      ":GSI2SK": `Conversation#${newMessage.sentAt}`,
     },
   };
-
   const newConversation = await updateItem(params);
 
   return ConversationDTO.toConversation(newConversation);
