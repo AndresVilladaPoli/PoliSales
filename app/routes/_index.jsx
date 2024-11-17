@@ -1,5 +1,5 @@
 import { useSearchParams, useLoaderData } from "@remix-run/react";
-import { json } from "@remix-run/node"; 
+import { json } from "@remix-run/node";
 import { useState, useEffect } from "react";
 import { requireUserSession } from "../data/auth.server";
 import Nav from "../layouts/Nav";
@@ -109,35 +109,63 @@ export default function Index() {
           onChange={handleSearchChange}
           onSearch={handleStartSearch}
         />
-        <SelectInput
-          label="Selecciona una categoría"
-          values={categories}
-          className="bg-white text-gray-800 border border-gray-300 p-2 rounded" // Fondo blanco para dropdown
-          onChange={(value) =>
-            setSearchParams((prevVals) => {
-              prevVals.delete("category");
-              prevVals.append("category", value);
-              return prevVals;
-            })
-          }
-        />
-        <PriceRange
-          className="bg-white text-gray-800 border border-gray-300 p-2 rounded" // Fondo blanco para filtro de precios
-          onNewStart={(value) =>
-            setSearchParams((searchParams) => {
-              searchParams.delete("priceStart");
-              searchParams.append("priceStart", value);
-              return searchParams;
-            })
-          }
-          onNewEnd={(value) =>
-            setSearchParams((searchParams) => {
-              searchParams.delete("priceEnd");
-              searchParams.append("priceEnd", value);
-              return searchParams;
-            })
-          }
-        />
+        {/* Filtro de categoría y rango de precios */}
+        <div className="flex flex-wrap justify-between items-center mt-4 gap-4">
+          <div className="flex-1 min-w-[200px] flex items-center">
+            <SelectInput
+              label={
+                <span className="text-[#1c6b44] font-semibold">
+                  Selecciona una categoría
+                </span>
+              }
+              values={categories}
+              className="bg-[#cedad3] text-[#1c6b44] border border-[#1c6b44] p-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1c6b44] w-full"
+              onChange={(value) =>
+                setSearchParams((prevVals) => {
+                  prevVals.delete("category");
+                  prevVals.append("category", value);
+                  return prevVals;
+                })
+              }
+            />
+          </div>
+          <div className="flex flex-1 min-w-[200px] flex items-center justify-between gap-4">
+            <div className="flex flex-col w-full">
+              <span className="text-[#1c6b44] font-semibold">
+                Precio mínimo
+              </span>
+              <input
+                type="number"
+                placeholder="0"
+                className="bg-[#ffffff] text-[#1c6b44] border border-[#1c6b44] p-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1c6b44] w-full"
+                onChange={(e) =>
+                  setSearchParams((searchParams) => {
+                    searchParams.delete("priceStart");
+                    searchParams.append("priceStart", e.target.value);
+                    return searchParams;
+                  })
+                }
+              />
+            </div>
+            <div className="flex flex-col w-full">
+              <span className="text-[#1c6b44] font-semibold">
+                Precio máximo
+              </span>
+              <input
+                type="number"
+                placeholder="10000000"
+                className="bg-[#ffffff] text-[#1c6b44] border border-[#1c6b44] p-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1c6b44] w-full"
+                onChange={(e) =>
+                  setSearchParams((searchParams) => {
+                    searchParams.delete("priceEnd");
+                    searchParams.append("priceEnd", e.target.value);
+                    return searchParams;
+                  })
+                }
+              />
+            </div>
+          </div>
+        </div>
 
         {/* Grid de publicaciones */}
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
@@ -153,7 +181,7 @@ export default function Index() {
               previousKeys.length === 0
                 ? "bg-gray-400"
                 : "bg-[#1c6b44] hover:bg-[#145732]"
-            } text-white font-medium rounded-lg text-sm px-5 py-2.5`} // Botón verde
+            } text-white font-medium rounded-lg text-sm px-5 py-2.5`}
           >
             Anterior
           </button>
@@ -162,7 +190,7 @@ export default function Index() {
             disabled={!nextKey}
             className={`${
               !nextKey ? "bg-gray-400" : "bg-[#1c6b44] hover:bg-[#145732]"
-            } text-white font-medium rounded-lg text-sm px-5 py-2.5`} // Botón verde
+            } text-white font-medium rounded-lg text-sm px-5 py-2.5`}
           >
             Siguiente
           </button>
@@ -171,5 +199,3 @@ export default function Index() {
     </div>
   );
 }
-
-
