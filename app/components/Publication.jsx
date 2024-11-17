@@ -6,14 +6,12 @@ const Publication = ({ publication }) => {
   const navigate = useNavigate();
 
   const createConversation = async (publicationId) => {
+    const body = new FormData();
+    body.append("publicationId", publicationId);
+
     const response = await fetch("/conversation", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        publicationId,
-      }),
+      body,
     });
 
     if (response.ok) {

@@ -2,11 +2,12 @@ import { json } from "@remix-run/node";
 import { getUserFromSession } from "../data/auth.server";
 import { startAChat } from "../data/chat.server";
 
-export async function loader({ request }) {
+export async function action({ request }) {
   const user = await getUserFromSession(request);
   if (!user) return json({ success: false }, 401);
 
-  const { publicationId } = request.body;
+  const body = await request.formData();
+  const publicationId = body.get("publicationId");
 
   try {
     const newConversation = await startAChat({

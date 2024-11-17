@@ -11,7 +11,6 @@ const getConversationsByUserMail = async (userEmail) => {
       ":GSI1SK": "Conversation#",
     },
   });
-
   allConversations.push(...page1.items);
 
   const page2 = await queryItems({
@@ -24,8 +23,17 @@ const getConversationsByUserMail = async (userEmail) => {
   });
 
   allConversations.push(...page2.items);
+  const conversationObject = {};
+  const newConversation = allConversations.filter((conversation) => {
+    if (!conversationObject[conversation.id]) {
+      conversationObject[conversation.id] = true;
+      return true;
+    }
 
-  return allConversations
+    return false;
+  });
+
+  return newConversation
     .map((conversation) => ConversationDTO.toConversation(conversation))
     .sort((a, b) => b.lastMessageId - a.lastMessageId);
 };

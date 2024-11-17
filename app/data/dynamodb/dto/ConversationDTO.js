@@ -33,7 +33,7 @@ class ConversationDTO {
     conversationDTO.GSI3SK = `Conversation#${conversation.receiverEmail}`;
     conversationDTO.GSI4PK = `Conversation#${conversation.receiverEmail}`;
     conversationDTO.GSI4SK = `Conversation#${conversation.senderEmail}`;
-    conversationDTO.id = publication.id;
+    conversationDTO.id = conversation.id;
     conversationDTO.senderEmail = conversation.senderEmail;
     conversationDTO.receiverEmail = conversation.receiverEmail;
     conversationDTO.lastMessageId = conversation.lastMessageId;

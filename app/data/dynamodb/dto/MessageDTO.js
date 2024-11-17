@@ -1,6 +1,6 @@
 import Message from "../../../models/Message";
 
-class messageDTO {
+class MessageDTO {
   constructor() {
     this.PK = null; // ID
     this.SK = null;
@@ -13,10 +13,11 @@ class messageDTO {
     this.text = null;
     this.sentAt = null;
     this.readAt = null;
+    this.conversationId = null;
   }
 
   static fromMessage(message) {
-    const messageDTO = new messageDTO();
+    const messageDTO = new MessageDTO();
 
     messageDTO.PK = `Message#${message.id}`;
     messageDTO.SK = `Message#${message.id}`;
@@ -29,6 +30,7 @@ class messageDTO {
     messageDTO.text = message.text;
     messageDTO.sentAt = message.sentAt;
     messageDTO.readAt = message.readAt;
+    messageDTO.conversationId = message.conversationId;
 
     return messageDTO;
   }
@@ -42,8 +44,9 @@ class messageDTO {
       text: messageDTO.text,
       sentAt: messageDTO.sentAt,
       readAt: messageDTO.readAt,
+      conversationId: messageDTO.conversationId,
     });
   }
 }
 
-export default messageDTO;
+export default MessageDTO;
