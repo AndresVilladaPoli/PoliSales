@@ -47,7 +47,7 @@ const Publication = ({ publication }) => {
           </span>
           <a
             onClick={() => createConversation(publication.id)}
-            className="text-white bg-[#1c6b44] hover:bg-[#145732] focus:ring-4 focus:outline-none focus:ring-[#1c6b44] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            className="text-white bg-[#1c6b44] hover:bg-[#145732] focus:ring-4 focus:outline-none focus:ring-[#1c6b44] font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:cursor-pointer"
           >
             Ver detalles
           </a>

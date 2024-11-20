@@ -9,6 +9,7 @@ const getMessagesFromConversation = async (conversationId) => {
       ":GSI1PK": `Conversation#${conversationId}`,
       ":GSI1SK": "Message#",
     },
+    ascendingOrder: true,
   });
 
   return items.map((item) => MessageDTO.toMessage(item));

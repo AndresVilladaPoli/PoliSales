@@ -46,21 +46,18 @@ export default function Chats() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-[#cedad3]">
+    <div className="min-h-screen flex flex-col items-center bg-[#cedad3] max-h-screen">
       <Nav />
-      <main className="flex-grow mt-6 px-4 sm:px-0 w-full max-w-lg">
+      <main className="flex-grow mt-6 px-4 sm:px-0 w-full max-w-lg overflow-scroll m-4">
         <h1 className="text-4xl font-bold text-center text-[#1c6b44]">
           Chat Individual
         </h1>
         <p className="text-sm text-center text-[#1c6b44] mt-2">
           {conversationId}
         </p>
-        <div className="space-y-4 mt-6">
+        <div className="space-y-4 mt-6 overflow-scroll">
           {messagesList.map((message) => (
-            <div
-              key={message.id}
-              className="bg-white shadow-md rounded-lg p-4"
-            >
+            <div key={message.id} className="bg-white shadow-md rounded-lg p-4">
               <h2 className="text-lg font-bold text-[#1c6b44]">
                 {message.senderId}
               </h2>
